@@ -1,0 +1,1 @@
+[update already existing connector](https://stackoverflow.com/questions/54093168/create-kafka-connector-with-the-name-which-is-not-already-in-use)

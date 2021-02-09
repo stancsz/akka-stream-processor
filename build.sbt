@@ -5,7 +5,9 @@ version := "0.1"
 scalaVersion := "2.13.4"
 
 lazy val akkaHttpVersion = "10.2.3"
-lazy val akkaVersion    = "2.6.12"
+lazy val AlpakkaVersion = "2.0.1"
+lazy val AkkaVersion    = "2.6.12"
+lazy val AlpakkaKafkaVersion = "2.0.5"
 
 lazy val root = (project in file(".")).
   settings(
@@ -15,14 +17,17 @@ lazy val root = (project in file(".")).
     )),
     name := "akka-http-quickstart-scala",
     libraryDependencies ++= Seq(
-      "com.typesafe.akka" %% "akka-http"                % akkaHttpVersion,
-      "com.typesafe.akka" %% "akka-http-spray-json"     % akkaHttpVersion,
-      "com.typesafe.akka" %% "akka-actor-typed"         % akkaVersion,
-      "com.typesafe.akka" %% "akka-stream"              % akkaVersion,
-      "ch.qos.logback"    % "logback-classic"           % "1.2.3",
+      "com.lightbend.akka" %% "akka-stream-alpakka-elasticsearch" % AlpakkaVersion,
+      "com.typesafe.akka"  %% "akka-stream-kafka"                 % AlpakkaKafkaVersion,
+      "com.lightbend.akka" %% "akka-projection-kafka"             % "1.1.0",
+      "com.typesafe.akka"  %% "akka-stream"                       % AkkaVersion,
+      "com.typesafe.akka"  %% "akka-actor-typed"                  % AkkaVersion,
+      "com.typesafe.akka"  %% "akka-actor"                        % AkkaVersion,
+      // for JSON in Scala
+      "io.spray" %% "spray-json" % "1.3.5",
 
-      "com.typesafe.akka" %% "akka-http-testkit"        % akkaHttpVersion % Test,
-      "com.typesafe.akka" %% "akka-actor-testkit-typed" % akkaVersion     % Test,
-      "org.scalatest"     %% "scalatest"                % "3.1.4"         % Test
+      // Logging
+      "com.typesafe.akka" %% "akka-slf4j"               % AkkaVersion,
+      "ch.qos.logback"    % "logback-classic"           % "1.2.3"
     )
   )
