@@ -59,3 +59,6 @@ once setup successful, debezium will be streaming kafka topics as shown below:
 
 [Read from and to Kafka](https://doc.akka.io/docs/akka-projection/current/kafka.html)
 
+[Consumer](https://doc.akka.io/docs/alpakka-kafka/0.11/consumer.html)
+
+[Read from a Kafka topic and publish to Elasticsearch](https://akka.io/alpakka-samples/kafka-to-elasticsearch/)

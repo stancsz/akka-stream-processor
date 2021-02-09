@@ -21,6 +21,7 @@ lazy val root = (project in file(".")).
       "com.typesafe.akka"  %% "akka-stream-kafka"                 % AlpakkaKafkaVersion,
       "com.lightbend.akka" %% "akka-projection-kafka"             % "1.1.0",
       "com.typesafe.akka"  %% "akka-stream"                       % AkkaVersion,
+      "com.typesafe.akka"  %% "akka-stream"                       % AkkaVersion,
       "com.typesafe.akka"  %% "akka-actor-typed"                  % AkkaVersion,
       "com.typesafe.akka"  %% "akka-actor"                        % AkkaVersion,
       // for JSON in Scala
