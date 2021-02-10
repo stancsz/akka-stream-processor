@@ -1,0 +1,3 @@
+[debug] not up to date. inChanged = true, force = false
+[debug] Updating ProjectRef(uri("file:/home/stan/github/azure-event-hubs-for-kafka/tutorials/akka/project/"), "akka-build")...
+[debug] Done updating ProjectRef(uri("file:/home/stan/github/azure-event-hubs-for-kafka/tutorials/akka/project/"), "akka-build")
