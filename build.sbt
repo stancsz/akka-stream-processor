@@ -2,7 +2,7 @@ name := "akka-stream-processor"
 
 version := "0.1"
 
-scalaVersion := "2.13.4"
+scalaVersion := "2.12.6" // newer scala version not supported by 'akka-stream-kafka'
 
 lazy val akkaHttpVersion = "10.2.3"
 lazy val akkaVersion    = "2.6.12"
@@ -23,6 +23,7 @@ lazy val root = (project in file(".")).
 
       "com.typesafe.akka" %% "akka-http-testkit"        % akkaHttpVersion % Test,
       "com.typesafe.akka" %% "akka-actor-testkit-typed" % akkaVersion     % Test,
-      "org.scalatest"     %% "scalatest"                % "3.1.4"         % Test
+      "org.scalatest"     %% "scalatest"                % "3.1.4"         % Test,
+      "com.typesafe.akka" %% "akka-stream-kafka" % "0.21.1"
     )
   )
