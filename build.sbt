@@ -2,6 +2,12 @@ name := "akka-stream-processor"
 
 version := "0.1"
 
+//scalaVersion := "2.12.6"
+
+libraryDependencies += "com.typesafe.akka" %% "akka-stream-kafka" % "0.21.1"
+
+//version := "0.1"
+
 scalaVersion := "2.13.4"
 
 lazy val akkaHttpVersion = "10.2.3"
