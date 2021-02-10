@@ -38,3 +38,9 @@ docker-compose -f docker-compose-mysql.yaml down
 once setup successful, debezium will be streaming kafka topics as shown below:
 
 ![demo](setup-guide.assets/demo.gif)
+
+
+
+after running the consumer main, akka is able to track payloads from the upstream mysql activities
+
+![akka-read-from-kafka-poc](setup-guide.assets/akka-read-from-kafka-poc.gif)
