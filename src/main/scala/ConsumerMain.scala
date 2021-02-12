@@ -21,10 +21,11 @@ object ConsumerMain {
     val consumerSettings = ConsumerSettings(system, new ByteArrayDeserializer, new StringDeserializer)
 
     // our topic to subscribe to for messages
-    val topic = "dbserver1.inventory.customers"
+    val topic = "dbserver1.courier_order_db.CourierTest"
+    val topic2 = "dbserver1.courier_order_db.OrderTest"
 
     // listen to our topic with our settings, until the program is exited
-    Consumer.plainSource(consumerSettings, Subscriptions.topics(topic))
+    Consumer.plainSource(consumerSettings, Subscriptions.topics(topic, topic2))
       .mapAsync(1) ( msg => {
         // print out our message once it's received
         println(s"Message Received : ${msg.timestamp} - ${msg.value}")
