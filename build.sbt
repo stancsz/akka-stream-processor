@@ -28,6 +28,10 @@ lazy val root = (project in file(".")).
     )
   )
 
+val playVersion = "2.8.7"
+
+libraryDependencies += "com.typesafe.play" %% "play-json" % playVersion
+
 
 val circeVersion = "0.12.3"
 
