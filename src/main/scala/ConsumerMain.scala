@@ -39,6 +39,7 @@ object ConsumerMain {
       .mapAsync(1) ( msg => {
         // print out our message once it's received
         processMessage(msg)
+        println(s"Message Received : ${msg.timestamp} - ${msg.value}")
         Future.successful(msg)
       }).runWith(Sink.ignore)
   }
