@@ -3,6 +3,7 @@ import akka.kafka.scaladsl.Consumer
 import akka.kafka.{ConsumerSettings, Subscriptions}
 import akka.stream.ActorMaterializer
 import akka.stream.scaladsl.Sink
+import io.circe.parser._
 import org.apache.kafka.clients.consumer.ConsumerRecord
 import org.apache.kafka.common.serialization.{ByteArrayDeserializer, StringDeserializer}
 
@@ -26,11 +27,10 @@ object ConsumerMain {
     var CRMap : Map[String, ConsumerRecord[Array[Byte], String]] = Map()
 
     def processMessage(msg: ConsumerRecord[Array[Byte], String]) = {
-      CRMap = CRMap + ( "msg#" -> msg)
       println(s"Message Received : ${msg.timestamp} - ${msg.value}")
-      CRMap.foreach {
-        println
-      }
+      println(s"Value: ${msg.value.getClass}")
+      val json = parse(msg.value).right // https://circe.github.io/circe/parsing.html
+
     }
 
     // listen to our topic with our settings, until the program is exited
