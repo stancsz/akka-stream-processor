@@ -5,7 +5,6 @@ import akka.stream.ActorMaterializer
 import akka.stream.scaladsl.Sink
 import org.apache.kafka.clients.consumer.ConsumerRecord
 import org.apache.kafka.common.serialization.{ByteArrayDeserializer, StringDeserializer}
-import processstream.ProcessMessage._
 
 import scala.concurrent.Future
 import scala.language.postfixOps
@@ -24,11 +23,12 @@ object ConsumerMain {
     val topic = "dbserver1.courier_order_db.CourierTest"
     val topic2 = "dbserver1.courier_order_db.OrderTest"
 
-    var consumerRecordList: List[ConsumerRecord[Array[Byte], String]] = List[ConsumerRecord[Array[Byte], String]]()
+    var CRMap : Map[String, ConsumerRecord[Array[Byte], String]] = Map()
+
     def processMessage(msg: ConsumerRecord[Array[Byte], String]) = {
-      consumerRecordList = msg :: consumerRecordList
-//      println(s"Message Received : ${msg.timestamp} - ${msg.value}")
-      consumerRecordList.foreach {
+      CRMap = CRMap + ( "msg#" -> msg)
+      println(s"Message Received : ${msg.timestamp} - ${msg.value}")
+      CRMap.foreach {
         println
       }
     }
@@ -38,7 +38,6 @@ object ConsumerMain {
       .mapAsync(1) ( msg => {
         // print out our message once it's received
         processMessage(msg)
-        printEntireConsumerRecordList(consumerRecordList)
         Future.successful(msg)
       }).runWith(Sink.ignore)
   }
