@@ -3,13 +3,12 @@ import akka.kafka.scaladsl.Consumer
 import akka.kafka.{ConsumerSettings, Subscriptions}
 import akka.stream.ActorMaterializer
 import akka.stream.scaladsl.Sink
-import org.apache.kafka.clients.consumer.ConsumerRecord
 import org.apache.kafka.common.serialization.{ByteArrayDeserializer, StringDeserializer}
+import play.api.libs.json._
+import streamprocessor.RecordProcessor
 
 import scala.concurrent.Future
 import scala.language.postfixOps
-import play.api.libs.json._
-import streamprocessor.RecordProcessor
 
 object ProcessorMain {
 
@@ -28,13 +27,13 @@ object ProcessorMain {
     var courierRecords : Map[JsValue, JsValue] = Map()
     var orderRecords : Map[JsValue, JsValue] = Map()
 
-    def processMessage(msg: ConsumerRecord[Array[Byte], String]) = {
-      println(s"Message Received : ${msg.timestamp} - ${msg.value}")
-      println(s"Value: ${msg.value.getClass}")
-      val json = Json.parse(msg.value)  // https://circe.github.io/circe/parsing.html
-      println(json)
-      println(json \ "payload" \ "after" \ "order_id")
-    }
+//    def processMessage(msg: ConsumerRecord[Array[Byte], String]) = {
+//      println(s"Message Received : ${msg.timestamp} - ${msg.value}")
+//      println(s"Value: ${msg.value.getClass}")
+//      val json = Json.parse(msg.value)  // https://circe.github.io/circe/parsing.html
+//      println(json)
+//      println(json \ "payload" \ "after" \ "order_id")
+//    }
 
     // listen to our topic with our settings, until the program is exited
     Consumer.plainSource(consumerSettings, Subscriptions.topics(topic, topic2))
