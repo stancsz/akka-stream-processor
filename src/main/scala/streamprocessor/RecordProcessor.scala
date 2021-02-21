@@ -28,6 +28,7 @@ object RecordProcessor {
    * @param json
    */
   private def processCourier(json: JsValue)={
+    produceRawMessage()
     println("matched as courier")
     println((json \ "payload" \ "source" \ "table").as[String])
     println(json \ "payload" \ "after" \ "courier_id")
