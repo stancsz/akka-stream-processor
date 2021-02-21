@@ -25,7 +25,8 @@ object ProcessorMain {
     val topic = "dbserver1.courier_order_db.CourierTest"
     val topic2 = "dbserver1.courier_order_db.OrderTest"
 
-    var CRMap : Map[String, ConsumerRecord[Array[Byte], String]] = Map()
+    var courierRecords : Map[JsValue, JsValue] = Map()
+    var orderRecords : Map[JsValue, JsValue] = Map()
 
     def processMessage(msg: ConsumerRecord[Array[Byte], String]) = {
       println(s"Message Received : ${msg.timestamp} - ${msg.value}")
@@ -38,7 +39,7 @@ object ProcessorMain {
     // listen to our topic with our settings, until the program is exited
     Consumer.plainSource(consumerSettings, Subscriptions.topics(topic, topic2))
       .mapAsync(1) ( msg => {
-        RecordProcessor.process(CRMap, msg)
+        RecordProcessor.process(courierRecords, orderRecords, msg)
         Future.successful(msg)
       }).runWith(Sink.ignore)
   }

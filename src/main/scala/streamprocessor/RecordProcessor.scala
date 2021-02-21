@@ -1,16 +1,15 @@
 package streamprocessor
+
 import org.apache.kafka.clients.consumer.ConsumerRecord
-import play.api.libs.json.Json
-import streamprocessor.MessageProducer.produceRawMessage
+import play.api.libs.json.{JsValue, Json}
 
 import java.time.Instant
 
 object RecordProcessor {
-  def process(records: Map[String, ConsumerRecord[Array[Byte], String]],
-//              records: Map[String, ConsumerRecord[Array[Byte], String]],
+  def process(records: Map[JsValue, JsValue],
+              orders: Map[JsValue, JsValue],
               message: ConsumerRecord[Array[Byte], String]): Unit = {
-//    processPrintHelper(records, message)
-//    val json = Json.parse(message.value)
+    val json = Json.parse(message.value)
     println(s"${Instant.now().toString()} started processing topic..")
     processTopic(message)
   }
@@ -24,17 +23,17 @@ object RecordProcessor {
     }
   }
 
-  private def processCourier(message: ConsumerRecord[Array[Byte], String])={
+  private def processCourier(message: ConsumerRecord[Array[Byte], String]) = {
     val json = Json.parse(message.value)
-    produceRawMessage(json)
+    //    produceRawMessage(json) -- produce raw message here
     println("matched as courier")
     println((json \ "payload" \ "source" \ "table").as[String])
     println(json \ "payload" \ "after" \ "courier_id")
   }
 
-  private def processOrder(message: ConsumerRecord[Array[Byte], String])={
+  private def processOrder(message: ConsumerRecord[Array[Byte], String]) = {
     val json = Json.parse(message.value)
-    produceRawMessage(json)
+    //    produceRawMessage(json) --produce raw message here
     println("matched as order")
     println((json \ "payload" \ "source" \ "table").as[String])
     println(json \ "payload" \ "after" \ "order_id")
