@@ -28,15 +28,7 @@ lazy val root = (project in file(".")).
     )
   )
 
-val playVersion = "2.8.7"
+val playVersion = "2.8.1"
 
 libraryDependencies += "com.typesafe.play" %% "play-json" % playVersion
 
-
-val circeVersion = "0.12.3"
-
-libraryDependencies ++= Seq(
-  "io.circe" %% "circe-core",
-  "io.circe" %% "circe-generic",
-  "io.circe" %% "circe-parser"
-).map(_ % circeVersion)

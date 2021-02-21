@@ -9,6 +9,7 @@ import org.apache.kafka.common.serialization.{ByteArrayDeserializer, StringDeser
 import scala.concurrent.Future
 import scala.language.postfixOps
 import play.api.libs.json._
+import processstream.RecordProcessor
 
 object ConsumerMain {
 
@@ -37,9 +38,7 @@ object ConsumerMain {
     // listen to our topic with our settings, until the program is exited
     Consumer.plainSource(consumerSettings, Subscriptions.topics(topic, topic2))
       .mapAsync(1) ( msg => {
-        // print out our message once it's received
-        processMessage(msg)
-        println(s"Message Received : ${msg.timestamp} - ${msg.value}")
+        RecordProcessor.process(CRMap, msg)
         Future.successful(msg)
       }).runWith(Sink.ignore)
   }
