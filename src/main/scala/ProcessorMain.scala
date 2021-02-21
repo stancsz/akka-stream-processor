@@ -9,9 +9,9 @@ import org.apache.kafka.common.serialization.{ByteArrayDeserializer, StringDeser
 import scala.concurrent.Future
 import scala.language.postfixOps
 import play.api.libs.json._
-import processstream.RecordProcessor
+import streamprocessor.RecordProcessor
 
-object ConsumerMain {
+object ProcessorMain {
 
   def main(args: Array[String]): Unit = {
     println("starting")
