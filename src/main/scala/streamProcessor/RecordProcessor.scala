@@ -1,7 +1,7 @@
 package streamProcessor
 
 import org.apache.kafka.clients.consumer.ConsumerRecord
-import play.api.libs.json.Json
+import play.api.libs.json.{JsValue, Json}
 
 import java.time.Instant
 
@@ -36,9 +36,29 @@ object RecordProcessor {
     val event = (meta \ "payload" \ "after")
     print(s"line 40...${event}")
     val matched = false
-    main.orderRecords.foreach(rec => println(rec._1))
-    main.appendOrder(event.get, meta)
 
+    val courier_id = (event \ "courier_id").toString
+    val courier_score = (event \ "courier_score").toString
+    val cour_app_created_timestamp = (event \ "app_created_timestamp").toString
+    val cour_lat = (event \ "lat").toString
+    val cour_lon = (event \ "lon").toString
+
+
+    def matchRec(record: JsValue): Unit ={
+//      courier_id,courier_score,app_created_timestamp,lat,lon
+      println("line 49 print rec..")
+      val order_id = (record \ "order_id").toString
+      val order_score = (record \ "order_score").toString
+      val ord_app_created_timestamp = (record \ "app_created_timestamp").toString
+      val ord_lat = (record \ "lat").toString
+      val ord_lon = (record \ "lon").toString
+      println("line 55 print rec..", order_id,order_score,ord_app_created_timestamp,ord_lat,ord_lon)
+    }
+
+    main.orderRecords.foreach(
+      rec => matchRec(rec._1)
+    )
+    main.appendOrder(event.get, meta)
   }
 
   private def processOrder(message: ConsumerRecord[Array[Byte], String],
