@@ -35,30 +35,31 @@ object RecordProcessor {
     /** --- */
     val event = (meta \ "payload" \ "after")
     print(s"line 40...${event}")
-    val matched = false
 
-    val courier_id = (event \ "courier_id").toString
-    val courier_score = (event \ "courier_score").toString
-    val cour_app_created_timestamp = (event \ "app_created_timestamp").toString
-    val cour_lat = (event \ "lat").toString
-    val cour_lon = (event \ "lon").toString
+    val courier_id = (event \ "courier_id").get.as[String]
+    val courier_score = (event \ "courier_score").get.as[String]
+    val cour_app_created_timestamp = (event \ "app_created_timestamp").get.as[String]
+    val cour_lat = (event \ "lat").get.as[String]
+    val cour_lon = (event \ "lon").get.as[String]
 
 
     def matchRec(record: JsValue): Unit ={
 //      courier_id,courier_score,app_created_timestamp,lat,lon
       println("line 49 print rec..")
-      val order_id = (record \ "order_id").toString
-      val order_score = (record \ "order_score").toString
-      val ord_app_created_timestamp = (record \ "app_created_timestamp").toString
-      val ord_lat = (record \ "lat").toString
-      val ord_lon = (record \ "lon").toString
+      val order_id = (record \ "order_id").get.as[String]
+      val order_score = (record \ "order_score").get.as[String]
+      val ord_app_created_timestamp = (record \ "app_created_timestamp").get.as[String]
+      val ord_lat = (record \ "lat").get.as[String]
+      val ord_lon = (record \ "lon").get.as[String]
       println("line 55 print rec..", order_id,order_score,ord_app_created_timestamp,ord_lat,ord_lon)
     }
 
+    val matched = false
     main.orderRecords.foreach(
       rec => matchRec(rec._1)
     )
-    main.appendOrder(event.get, meta)
+
+    main.appendCour(event.get, meta)
   }
 
   private def processOrder(message: ConsumerRecord[Array[Byte], String],
