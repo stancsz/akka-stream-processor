@@ -1,32 +1,30 @@
 package streamProcessor
 
 import org.apache.kafka.clients.consumer.ConsumerRecord
-import play.api.libs.json.{JsValue, Json}
+import play.api.libs.json.Json
 
 import java.time.Instant
 
 object RecordProcessor {
 
-  def process(processorMain: ProcessorMain,
+  def process(main: ProcessorMain.type,
               message: ConsumerRecord[Array[Byte], String]): Unit = {
     val json = Json.parse(message.value)
     val topic = (json \ "payload" \ "source" \ "table").as[String]
-    val event = (json \ "payload" \ "after")
     println(s"${Instant.now().toString()} started processing topic..")
     topic match {
       case "CourierTest" => {
-        processCourier(message,)
+        processCourier(message, main)
       }
       case "OrderTest" => {
-        processOrder(message,)
+        processOrder(message, main)
       }
     }
 
   }
 
   private def processCourier(message: ConsumerRecord[Array[Byte], String],
-                             courRecord: Map[JsValue, JsValue],
-                             orderRecord: Map[JsValue, JsValue]) = {
+                             main: ProcessorMain.type ) = {
     //    produceRawMessage(json) -- produce raw message here
     val meta = Json.parse(message.value)
 
@@ -36,15 +34,15 @@ object RecordProcessor {
     //    println(meta \ "payload" \ "after" \ "courier_id")
     /** --- */
     val event = (meta \ "payload" \ "after")
-    print("line 40...")
+    print(s"line 40...${event}")
     val matched = false
-    orderRecord.foreach(rec => println(rec._1 \ "order_id"))
-    appendCour()
+    main.orderRecords.foreach(rec => println(rec._1))
+    main.appendOrder(event.get, meta)
+
   }
 
   private def processOrder(message: ConsumerRecord[Array[Byte], String],
-                           courRecord: Map[JsValue, JsValue],
-                           orderRecord: Map[JsValue, JsValue]) = {
+                           main: ProcessorMain.type) = {
     //    produceRawMessage(json) --produce raw message here
     val meta = Json.parse(message.value)
 
@@ -54,10 +52,10 @@ object RecordProcessor {
     //    println(meta \ "payload" \ "after" \ "order_id")
     /** --- */
     val event = (meta \ "payload" \ "after")
-    print("line 40...")
+    print(s"line 56...${event}")
     val matched = false
-    courRecord.foreach(rec => println(rec._1 \ "order_id"))
-    orderRecord = orderRecord + (event -> meta)
+    main.courierRecords.foreach(rec => println(rec._1))
+    main.appendOrder(event.get, meta)
   }
 
   private def processPrintHelper(records: Map[String, ConsumerRecord[Array[Byte], String]], message: ConsumerRecord[Array[Byte], String]) = {

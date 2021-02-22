@@ -21,7 +21,7 @@ object ProcessorMain {
   }
 
   def appendOrder(key: JsValue, value: JsValue): Unit = {
-    courierRecords = orderRecords + (key -> value)
+    orderRecords = orderRecords + (key -> value)
   }
 
   def processMessage(msg: ConsumerRecord[Array[Byte], String]) = {
