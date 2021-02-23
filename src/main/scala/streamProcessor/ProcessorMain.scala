@@ -24,6 +24,15 @@ object ProcessorMain {
     orderRecords = orderRecords + (key -> value)
   }
 
+  def removeFromCour(key:JsValue): Unit ={
+    courierRecords = courierRecords.-(key)
+  }
+
+  def removeFromOrder(key:JsValue): Unit ={
+    orderRecords = orderRecords.-(key)
+  }
+
+
   def processMessage(msg: ConsumerRecord[Array[Byte], String]) = {
     println(s"Message Received : ${msg.timestamp} - ${msg.value}")
     println(s"Value: ${msg.value.getClass}")
