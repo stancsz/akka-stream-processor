@@ -77,6 +77,8 @@ object RecordProcessor {
         val ord_app_created_timestamp = (record \ "app_created_timestamp").get.as[String]
         val ord_lat = (record \ "lat").get.as[String].toDouble
         val ord_lon = (record \ "lon").get.as[String].toDouble
+        main.appendCour(event.get, meta)
+
         if (distanceCheck(cour_lat, cour_lon, ord_lat, ord_lon, 15) && scoreCheck(courier_score, order_score)) {
           /**
            * match made, not appending the courier to the map, produce a matched message, and also delete
@@ -85,6 +87,7 @@ object RecordProcessor {
           println(s"line 85 - match made - distance check: ${distanceCheck(cour_lat, cour_lon, ord_lat, ord_lon, 15)}  , score check: ${scoreCheck(courier_score, order_score)} )")
           println(s"dropping match record before: ${main.orderRecords}")
           main.removeFromOrder(record)
+          main.removeFromCour(event.get)
           //          produceMatchedMessage(event.get, record)
           println(s"dropping match record after: ${main.orderRecords}")
         } else {
@@ -92,7 +95,6 @@ object RecordProcessor {
            * match not made, appending the new courier event and meta data to the courier map.
            */
           println(s"line 90 - match not made - distance check: ${distanceCheck(cour_lat, cour_lon, ord_lat, ord_lon, 15)}  , score check: ${scoreCheck(courier_score, order_score)} )")
-          main.appendCour(event.get, meta)
           println(s"line 92 - non matched record added to courier map: ${main.courierRecords}")
         }
 
@@ -116,6 +118,7 @@ object RecordProcessor {
     val ord_app_created_timestamp = (event \ "app_created_timestamp").get.as[String]
     val ord_lat = (event \ "lat").get.as[String].toDouble
     val ord_lon = (event \ "lon").get.as[String].toDouble
+    main.appendOrder(event.get, meta)
 
 
     def matchCourier(record: JsValue): Unit = {
@@ -133,6 +136,7 @@ object RecordProcessor {
           println(s"line 85 - match made - distance check: ${distanceCheck(cour_lat, cour_lon, ord_lat, ord_lon, 15)}  , score check: ${scoreCheck(courier_score, order_score)} )")
           println(s"dropping match record before: ${main.courierRecords}")
           main.removeFromCour(record)
+          main.removeFromOrder(event.get)
           //          produceMatchedMessage(event.get, record)
           println(s"dropping match record after: ${main.courierRecords}")
         } else {
@@ -140,7 +144,6 @@ object RecordProcessor {
            * match not made, appending the new courier event and meta data to the courier map.
            */
           println(s"line 90 - match not made - distance check: ${distanceCheck(cour_lat, cour_lon, ord_lat, ord_lon, 15)}  , score check: ${scoreCheck(courier_score, order_score)} )")
-          main.appendOrder(event.get, meta)
           println(s"line 92 - non matched record added to order map: ${main.orderRecords}")
         }
 
