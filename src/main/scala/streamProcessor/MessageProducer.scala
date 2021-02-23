@@ -9,4 +9,5 @@ object MessageProducer {
    * google bigquery equivalent
    */
   def produceRawMessage(json: JsValue) = ???
+  def produceMatchedMessage(event: JsValue, meta: JsValue) = ???
 }

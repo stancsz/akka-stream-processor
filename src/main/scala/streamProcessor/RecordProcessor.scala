@@ -77,12 +77,13 @@ object RecordProcessor {
         val ord_lon = (record \ "lon").get.as[String].toDouble
         if (distanceCheck(cour_lat, cour_lon, ord_lat, ord_lon, 15) && scoreCheck(courier_score,order_score) ) {
           /**
-           * match made, not appending the courier to the map, produce a message, and also delete
+           * match made, not appending the courier to the map, produce a matched message, and also delete
            * the matched order from the order map.
            */
           println(s"line 85 - match made - distance check: ${distanceCheck(cour_lat, cour_lon, ord_lat, ord_lon, 15)}  , score check: ${scoreCheck(courier_score,order_score)} )")
           println(s"dropping match record before: ${main.orderRecords}")
           main.removeFromOrder(record)
+//          produceMatchedMessage(event.get, record)
           println(s"dropping match record after: ${main.orderRecords}")
         } else {
           /**
@@ -113,14 +114,5 @@ object RecordProcessor {
     val matched = false
     main.courierRecords.foreach(rec => println(rec._1))
     main.appendOrder(event.get, meta)
-  }
-
-  private def processPrintHelper(records: Map[String, ConsumerRecord[Array[Byte], String]], message: ConsumerRecord[Array[Byte], String]) = {
-    println(s"Message Received : ${message.timestamp} - ${message.value}")
-    println(s"Value: ${message.value.getClass}")
-    val json = Json.parse(message.value)
-    records.foreach {
-      println
-    }
   }
 }
