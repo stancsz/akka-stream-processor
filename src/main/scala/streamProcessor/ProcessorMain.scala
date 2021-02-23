@@ -42,7 +42,7 @@ object ProcessorMain {
   }
 
   def main(args: Array[String]): Unit = {
-    println("starting")
+    println("Processor Main Started...")
     implicit val system: ActorSystem = ActorSystem.apply("akka-stream-kafka")
     implicit val materializer: ActorMaterializer = ActorMaterializer()
 
