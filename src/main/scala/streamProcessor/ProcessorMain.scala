@@ -12,9 +12,24 @@ import play.api.libs.json.{JsValue, Json}
 import scala.concurrent.Future
 
 object ProcessorMain {
+  var courMessage :JsValue = null
+  var ordMessage :JsValue = null
+  var matchMessage :JsValue = null
 
   var courierRecords: Map[JsValue, JsValue] = Map()
   var orderRecords: Map[JsValue, JsValue] = Map()
+
+  def setCourMessage(msg : JsValue ): Unit ={
+    courMessage = msg
+  }
+
+  def setOrdMessage(msg : JsValue ): Unit ={
+    ordMessage = msg
+  }
+
+  def setMatchMessage(msg : JsValue ): Unit ={
+    matchMessage = msg
+  }
 
   def appendCour(key: JsValue, value: JsValue): Unit = {
     courierRecords = courierRecords + (key -> value)

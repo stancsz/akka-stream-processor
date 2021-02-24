@@ -2,6 +2,7 @@ package streamProcessor
 
 import org.apache.kafka.clients.consumer.ConsumerRecord
 import play.api.libs.json.{JsValue, Json}
+import streamProcessor.ProcessorMain.{setCourMessage, setOrdMessage}
 
 import java.time.Instant
 import scala.math.abs
@@ -60,8 +61,8 @@ object RecordProcessor {
 
   private def processCourier(message: ConsumerRecord[Array[Byte], String],
                              main: ProcessorMain.type) = {
-    //    produceRawMessage(json) -- produce raw message here
     val meta = Json.parse(message.value)
+    setCourMessage(meta)
     val event = (meta \ "payload" \ "after")
     val courier_id = (event \ "courier_id").get.as[String]
     val courier_score = (event \ "courier_score").get.as[String].toDouble
@@ -112,6 +113,7 @@ object RecordProcessor {
   private def processOrder(message: ConsumerRecord[Array[Byte], String],
                            main: ProcessorMain.type) = {
     val meta = Json.parse(message.value)
+    setOrdMessage(meta)
     val event = (meta \ "payload" \ "after")
     val order_id = (event \ "order_id").get.as[String]
     val order_score = (event \ "order_score").get.as[String].toDouble
