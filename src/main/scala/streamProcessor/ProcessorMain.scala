@@ -5,9 +5,8 @@ import akka.kafka.scaladsl.Consumer
 import akka.kafka.{ConsumerSettings, Subscriptions}
 import akka.stream.ActorMaterializer
 import akka.stream.scaladsl.Sink
-import org.apache.kafka.clients.consumer.ConsumerRecord
 import org.apache.kafka.common.serialization.{ByteArrayDeserializer, StringDeserializer}
-import play.api.libs.json.{JsValue, Json}
+import play.api.libs.json.JsValue
 
 import scala.concurrent.Future
 
@@ -48,12 +47,15 @@ object ProcessorMain {
   }
 
 
-  def processMessage(msg: ConsumerRecord[Array[Byte], String]) = {
-    println(s"Message Received : ${msg.timestamp} - ${msg.value}")
-    println(s"Value: ${msg.value.getClass}")
-    val json = Json.parse(msg.value) // https://circe.github.io/circe/parsing.html
-    println(json)
-    println(json \ "payload" \ "after" \ "order_id")
+  def produceMessage() = {
+    if (courMessage!=null){
+      //produce something
+    } else if (ordMessage!=null){
+      //produce something
+    } else if (matchMessage!=null){
+      //produce something
+    }
+
   }
 
   def main(args: Array[String]): Unit = {

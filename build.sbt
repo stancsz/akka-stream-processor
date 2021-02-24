@@ -32,3 +32,11 @@ val playVersion = "2.8.1"
 
 libraryDependencies += "com.typesafe.play" %% "play-json" % playVersion
 
+
+//val AkkaVersion = "2.5.31"
+//val AkkaHttpVersion = "10.1.11"
+libraryDependencies ++= Seq(
+  "com.lightbend.akka" %% "akka-stream-alpakka-kinesis" % "2.0.2",
+//  "com.typesafe.akka" %% "akka-stream" % AkkaVersion,
+//  "com.typesafe.akka" %% "akka-http" % AkkaHttpVersion
+)
