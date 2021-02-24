@@ -1,12 +1,18 @@
 package streamProcessor
 
+import akka.NotUsed
 import akka.actor.ActorSystem
 import akka.kafka.scaladsl.Consumer
 import akka.kafka.{ConsumerSettings, Subscriptions}
 import akka.stream.ActorMaterializer
+import akka.stream.alpakka.kinesis.KinesisFlowSettings
+import akka.stream.alpakka.kinesis.scaladsl.KinesisSink
 import akka.stream.scaladsl.Sink
+import com.github.matsluni.akkahttpspi.AkkaHttpClient
 import org.apache.kafka.common.serialization.{ByteArrayDeserializer, StringDeserializer}
 import play.api.libs.json.JsValue
+import software.amazon.awssdk.services.kinesis.KinesisAsyncClient
+import software.amazon.awssdk.services.kinesis.model.PutRecordsRequestEntry
 
 import scala.concurrent.Future
 
@@ -63,6 +69,40 @@ object ProcessorMain {
     implicit val system: ActorSystem = ActorSystem.apply("akka-stream-kafka")
     implicit val materializer: ActorMaterializer = ActorMaterializer()
 
+    /**
+     * aws client config
+     */
+    implicit val amazonKinesisAsync: software.amazon.awssdk.services.kinesis.KinesisAsyncClient =
+      KinesisAsyncClient
+        .builder()
+        .httpClient(AkkaHttpClient.builder().withActorSystem(system).build())
+        // Possibility to configure the retry policy
+        // see https://doc.akka.io/docs/alpakka/current/aws-shared-configuration.html
+        // .overrideConfiguration(...)
+        .build()
+
+
+    /**
+     * kinesis config
+     */
+    val flowSettings = KinesisFlowSettings
+      .create()
+      .withParallelism(1)
+      .withMaxBatchSize(500)
+      .withMaxRecordsPerSecond(1000)
+      .withMaxBytesPerSecond(1000000)
+    val defaultFlowSettings = KinesisFlowSettings.Defaults
+    val shardFlowSettings = KinesisFlowSettings.byNumberOfShards(1)
+
+    /**
+     * kinesis flow config
+     */
+    val sinkOrd: Sink[PutRecordsRequestEntry, NotUsed] = KinesisSink("akkademo-order")
+    val sinkCour: Sink[PutRecordsRequestEntry, NotUsed] = KinesisSink("akkademo-cour")
+    val sinkmatch: Sink[PutRecordsRequestEntry, NotUsed] = KinesisSink("akkademo-match")
+
+
+
     // grab our settings from the resources/application.conf file
     val consumerSettings = ConsumerSettings(system, new ByteArrayDeserializer, new StringDeserializer)
 
@@ -76,5 +116,12 @@ object ProcessorMain {
         RecordProcessor.process(this, msg)
         Future.successful(msg)
       }).runWith(Sink.ignore)
+
+
+    /**
+     * terminating kinesis client
+     */
+    system.registerOnTermination(amazonKinesisAsync.close())
   }
+
 }

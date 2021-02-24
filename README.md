@@ -56,3 +56,7 @@ once setup successful, debezium will be streaming kafka topics as shown below:
 [The Whys and Hows of Database Streaming](https://www.infoq.com/presentations/wepay-database-streaming/) -- recommended
 
 [Practical Change Data Streaming Use Cases with Apache Kafka & Debezium](https://www.infoq.com/presentations/data-streaming-kafka-debezium/)
+
+https://doc.akka.io/docs/alpakka/current/kinesis.html
+
+https://doc.akka.io/docs/alpakka/current/aws-shared-configuration.html
