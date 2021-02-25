@@ -1,6 +1,8 @@
 package streamProcessor
 
 import org.apache.kafka.clients.consumer.ConsumerRecord
+import play.api.libs.json.Format.GenericFormat
+import play.api.libs.json.Json.toJson
 import play.api.libs.json.{JsValue, Json}
 import streamProcessor.ProcessorMain.{setCourMessage, setOrdMessage}
 
@@ -35,13 +37,18 @@ object RecordProcessor {
    * @param lon2
    */
   def distanceCheck(lat1: Double, lon1: Double, lat2: Double, lon2: Double, distance: Double): Boolean = {
+    val dist: Double = computeDist(lat1, lon1, lat2, lon2)
+    println(s"line 52 - km distance between courier and order ${dist}")
+    dist <= distance
+  }
+
+  def computeDist(lat1: Double, lon1: Double, lat2: Double, lon2: Double) = {
     val deltaLat = math.toRadians(abs(lat1 - lat2))
     val deltaLong = math.toRadians(abs(lon1 - lon2))
     val a = math.pow(math.sin(deltaLat / 2), 2) + math.cos(math.toRadians(lat1)) * math.cos(math.toRadians(lat2)) * math.pow(math.sin(deltaLong / 2), 2)
     val greatCircleDistance = 2 * math.atan2(math.sqrt(a), math.sqrt(1 - a))
     val dist = 6370.9924 * greatCircleDistance
-    println(s"line 52 - km distance between courier and order ${dist}")
-    dist <= distance
+    dist
   }
 
   /**
@@ -87,6 +94,20 @@ object RecordProcessor {
            */
           println(s"line 85 - match made - distance check: ${distanceCheck(cour_lat, cour_lon, ord_lat, ord_lon, 15)}  , score check: ${scoreCheck(courier_score, order_score)} )")
           println(s"dropping match record before: ${main.orderRecords}")
+
+
+
+          val data: JsValue = toJson(Map(
+            "order_id" ->order_id,
+            "order_record"-> event,
+            "courier_id"->courier_id,
+            "courier_record"-> record,
+            "ord_cour_dist" -> computeDist(cour_lat, cour_lon,ord_lat, ord_lon),
+            "ord_cour_match_score"-> scoreCheck(courier_score,order_score)
+          ).toString())
+
+          main.setMatchMessage(data)
+
           main.removeFromOrder(record)
           main.removeFromCour(event.get)
           //          produceMatchedMessage(event.get, record)
@@ -137,6 +158,17 @@ object RecordProcessor {
            */
           println(s"line 85 - match made - distance check: ${distanceCheck(cour_lat, cour_lon, ord_lat, ord_lon, 15)}  , score check: ${scoreCheck(courier_score, order_score)} )")
           println(s"dropping match record before: ${main.courierRecords}")
+
+          val data: JsValue = toJson(Map(
+            "order_id" ->order_id,
+            "order_record"-> event,
+            "courier_id"->courier_id,
+            "courier_record"-> record,
+            "ord_cour_dist" -> computeDist(cour_lat, cour_lon,ord_lat, ord_lon),
+            "ord_cour_match_score"-> scoreCheck(courier_score,order_score)
+          ).toString())
+          main.setMatchMessage(data)
+
           main.removeFromCour(record)
           main.removeFromOrder(event.get)
           //          produceMatchedMessage(event.get, record)
