@@ -40,3 +40,7 @@ libraryDependencies ++= Seq(
 //  "com.typesafe.akka" %% "akka-stream" % AkkaVersion,
 //  "com.typesafe.akka" %% "akka-http" % AkkaHttpVersion
 )
+
+
+resolvers in ThisBuild += Resolver.bintrayRepo("streetcontxt", "maven")
+libraryDependencies += "com.streetcontxt" %% "kcl-akka-stream" % "3.0.1"
