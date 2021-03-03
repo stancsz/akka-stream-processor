@@ -5,6 +5,7 @@ import akka.stream.{ActorMaterializer, Materializer}
 import com.github.matsluni.akkahttpspi.AkkaHttpClient
 import com.github.matsluni.akkahttpspi.AkkaHttpClient.logger
 import org.slf4j.LoggerFactory
+import software.amazon.awssdk.auth.credentials.{AwsBasicCredentials, StaticCredentialsProvider}
 import software.amazon.awssdk.core.SdkBytes
 import software.amazon.awssdk.services.kinesis.KinesisAsyncClient
 import software.amazon.awssdk.services.kinesis.model.PutRecordRequest
@@ -29,9 +30,11 @@ object ProduceSingleMessage {
     /**
      * setup async client
      */
+    val credentialsProvider = StaticCredentialsProvider.create(AwsBasicCredentials.create())
     implicit val amazonKinesisAsync: software.amazon.awssdk.services.kinesis.KinesisAsyncClient =
       KinesisAsyncClient
         .builder()
+        .credentialsProvider(credentialsProvider)
         .httpClient(AkkaHttpClient.builder().withActorSystem(system).build())
         // Possibility to configure the retry policy
         // see https://doc.akka.io/docs/alpakka/current/aws-shared-configuration.html
@@ -43,7 +46,7 @@ object ProduceSingleMessage {
     LoggerFactory.getLogger(ProduceSingleMessage.getClass)
 
 
-    val message = "test message"
+    val message = "test messagehttps://s3.console.aws.amazon.com/s3/buckets/akka-demo-bucket?region=us-west-2&tab=objects"
     val key = s"partitionKey ${1}"
 
     val request: PutRecordRequest = PutRecordRequest.builder()
