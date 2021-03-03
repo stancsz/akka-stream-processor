@@ -4,12 +4,13 @@ import akka.actor.ActorSystem
 import akka.stream.{ActorMaterializer, Materializer}
 import com.github.matsluni.akkahttpspi.AkkaHttpClient
 import com.github.matsluni.akkahttpspi.AkkaHttpClient.logger
+import com.typesafe.config.ConfigFactory
 import org.slf4j.LoggerFactory
 import software.amazon.awssdk.auth.credentials.{AwsBasicCredentials, StaticCredentialsProvider}
 import software.amazon.awssdk.core.SdkBytes
+import software.amazon.awssdk.regions.Region
 import software.amazon.awssdk.services.kinesis.KinesisAsyncClient
 import software.amazon.awssdk.services.kinesis.model.PutRecordRequest
-import software.amazon.awssdk.regions.Region
 
 import scala.concurrent.ExecutionException
 
@@ -19,15 +20,24 @@ import scala.concurrent.ExecutionException
  * https://github.com/dingjie27/demoforKinesis/blob/454755a14a483c3af29d12ddab08cae25be045de/src/main/java/com/kinesis/demo/service/producer/ProducerUsingKinesisAsyncClient.java
  */
 object ProduceSingleMessage {
+  val config = ConfigFactory.load( )
+  implicit val system: ActorSystem = ActorSystem("kinesis-producer")
+//  print(system.settings)
 
-  implicit val system: ActorSystem = ActorSystem()
+  val iam_accesskey = config.getConfig("kinesis-producer")
+    .getValue("iam.accesskey")
+    .unwrapped().toString
+  val iam_password = config.getConfig("kinesis-producer")
+    .getValue("iam.password")
+    .unwrapped().toString
+
   implicit val materializer: Materializer = ActorMaterializer()
   val region = Region.US_WEST_2
 
   /**
    * setup async client
    */
-  val credentialsProvider = StaticCredentialsProvider.create(AwsBasicCredentials.create())
+  val credentialsProvider = StaticCredentialsProvider.create(AwsBasicCredentials.create(iam_accesskey, iam_password))
   implicit val amazonKinesisAsync: KinesisAsyncClient =
     KinesisAsyncClient
       .builder()
