@@ -96,14 +96,13 @@ object RecordProcessor {
           println(s"dropping match record before: ${main.orderRecords}")
 
 
-
           val data: JsValue = toJson(Map(
-            "order_id" ->order_id,
-            "order_record"-> event,
-            "courier_id"->courier_id,
-            "courier_record"-> record,
-            "ord_cour_dist" -> computeDist(cour_lat, cour_lon,ord_lat, ord_lon),
-            "ord_cour_match_score"-> scoreCheck(courier_score,order_score)
+            "order_id" -> order_id,
+            "order_record" -> event,
+            "courier_id" -> courier_id,
+            "courier_record" -> record,
+            "ord_cour_dist" -> computeDist(cour_lat, cour_lon, ord_lat, ord_lon),
+            "ord_cour_match_score" -> scoreCheck(courier_score, order_score)
           ).toString())
 
           main.setMatchMessage(data)
@@ -160,12 +159,12 @@ object RecordProcessor {
           println(s"dropping match record before: ${main.courierRecords}")
 
           val data: JsValue = toJson(Map(
-            "order_id" ->order_id,
-            "order_record"-> event,
-            "courier_id"->courier_id,
-            "courier_record"-> record,
-            "ord_cour_dist" -> computeDist(cour_lat, cour_lon,ord_lat, ord_lon),
-            "ord_cour_match_score"-> scoreCheck(courier_score,order_score)
+            "order_id" -> order_id,
+            "order_record" -> event,
+            "courier_id" -> courier_id,
+            "courier_record" -> record,
+            "ord_cour_dist" -> computeDist(cour_lat, cour_lon, ord_lat, ord_lon),
+            "ord_cour_match_score" -> scoreCheck(courier_score, order_score)
           ).toString())
           main.setMatchMessage(data)
 

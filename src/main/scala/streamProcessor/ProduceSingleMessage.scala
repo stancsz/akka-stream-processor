@@ -20,9 +20,9 @@ import scala.concurrent.ExecutionException
  * https://github.com/dingjie27/demoforKinesis/blob/454755a14a483c3af29d12ddab08cae25be045de/src/main/java/com/kinesis/demo/service/producer/ProducerUsingKinesisAsyncClient.java
  */
 object ProduceSingleMessage {
-  val config = ConfigFactory.load( )
+  val config = ConfigFactory.load()
   implicit val system: ActorSystem = ActorSystem("kinesis-producer")
-//  print(system.settings)
+  //  print(system.settings)
 
   val iam_accesskey = config.getConfig("kinesis-producer")
     .getValue("iam.accesskey")
