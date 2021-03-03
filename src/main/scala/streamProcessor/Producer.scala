@@ -19,7 +19,7 @@ import scala.concurrent.ExecutionException
  * Java code, but good as an reference:
  * https://github.com/dingjie27/demoforKinesis/blob/454755a14a483c3af29d12ddab08cae25be045de/src/main/java/com/kinesis/demo/service/producer/ProducerUsingKinesisAsyncClient.java
  */
-object ProduceSingleMessage {
+object Producer {
   val config = ConfigFactory.load()
   implicit val system: ActorSystem = ActorSystem("kinesis-producer")
   //  print(system.settings)
@@ -73,7 +73,7 @@ object ProduceSingleMessage {
   }
 
   def main(args: Array[String]): Unit = {
-    LoggerFactory.getLogger(ProduceSingleMessage.getClass)
+    LoggerFactory.getLogger(Producer.getClass)
     val message = "test messagehttps://s3.console.aws.amazon.com/s3/buckets/akka-demo-bucket?region=us-west-2&tab=objects"
     val key = s"partitionKey ${"iijflsd-123l-fjdls-123"}"
     val streamname = "akkademo-order"

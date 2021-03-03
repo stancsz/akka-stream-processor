@@ -4,14 +4,14 @@ import org.apache.kafka.clients.consumer.ConsumerRecord
 import play.api.libs.json.Format.GenericFormat
 import play.api.libs.json.Json.toJson
 import play.api.libs.json.{JsValue, Json}
-import streamProcessor.ProcessorMain.{setCourMessage, setOrdMessage}
+import streamProcessor.Processor.{setCourMessage, setOrdMessage}
 
 import java.time.Instant
 import scala.math.abs
 
-object RecordProcessor {
+object ProcessStream {
 
-  def process(main: ProcessorMain.type,
+  def process(main: Processor.type,
               message: ConsumerRecord[Array[Byte], String]): Unit = {
     val json = Json.parse(message.value)
     val topic = (json \ "payload" \ "source" \ "table").as[String]
@@ -67,7 +67,7 @@ object RecordProcessor {
 
 
   private def processCourier(message: ConsumerRecord[Array[Byte], String],
-                             main: ProcessorMain.type) = {
+                             main: Processor.type) = {
     val meta = Json.parse(message.value)
     setCourMessage(meta)
     val event = (meta \ "payload" \ "after")
@@ -131,7 +131,7 @@ object RecordProcessor {
   }
 
   private def processOrder(message: ConsumerRecord[Array[Byte], String],
-                           main: ProcessorMain.type) = {
+                           main: Processor.type) = {
     val meta = Json.parse(message.value)
     setOrdMessage(meta)
     val event = (meta \ "payload" \ "after")

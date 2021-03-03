@@ -10,7 +10,10 @@ import play.api.libs.json.JsValue
 
 import scala.concurrent.Future
 
-object ProcessorMain {
+object Processor {
+
+
+
   var courMessage: JsValue = null
   var ordMessage: JsValue = null
   var matchMessage: JsValue = null
@@ -61,7 +64,7 @@ object ProcessorMain {
     // listen to our topic with our settings, until the program is exited
     Consumer.plainSource(consumerSettings, Subscriptions.topics(topic, topic2))
       .mapAsync(1)(msg => {
-        RecordProcessor.process(this, msg)
+        ProcessStream.process(this, msg)
         Future.successful(msg)
       }).runWith(Sink.ignore)
 
