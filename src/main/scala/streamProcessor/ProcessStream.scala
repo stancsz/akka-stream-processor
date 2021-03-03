@@ -4,8 +4,6 @@ import org.apache.kafka.clients.consumer.ConsumerRecord
 import play.api.libs.json.Format.GenericFormat
 import play.api.libs.json.Json.toJson
 import play.api.libs.json.{JsValue, Json}
-import streamProcessor.Processor.{setCourMessage, setOrdMessage}
-
 import java.time.Instant
 import scala.math.abs
 
@@ -69,7 +67,6 @@ object ProcessStream {
   private def processCourier(message: ConsumerRecord[Array[Byte], String],
                              main: Processor.type) = {
     val meta = Json.parse(message.value)
-    setCourMessage(meta)
     val event = (meta \ "payload" \ "after")
     val courier_id = (event \ "courier_id").get.as[String]
     val courier_score = (event \ "courier_score").get.as[String].toDouble
@@ -77,6 +74,9 @@ object ProcessStream {
     val cour_lat = (event \ "lat").get.as[String].toDouble
     val cour_lon = (event \ "lon").get.as[String].toDouble
 
+    // TODO produce raw courier message
+    val key = courier_id + cour_app_created_timestamp
+    main.producer.kinesisPutRecord("rip-demo-courier-stream",event.toString,key)
 
     def matchOrder(record: JsValue): Unit = {
       try {
@@ -105,11 +105,13 @@ object ProcessStream {
             "ord_cour_match_score" -> scoreCheck(courier_score, order_score)
           ).toString())
 
-          main.setMatchMessage(data)
-
           main.removeFromOrder(record)
           main.removeFromCour(event.get)
-          //          produceMatchedMessage(event.get, record)
+
+          // TODO: produce matched message fan in
+          val key = order_id + "-match-" + courier_id
+          main.producer.kinesisPutRecord("rip-demo-match-stream",data.toString(),key)
+
           println(s"dropping match record after: ${main.orderRecords}")
         } else {
           /**
@@ -133,7 +135,6 @@ object ProcessStream {
   private def processOrder(message: ConsumerRecord[Array[Byte], String],
                            main: Processor.type) = {
     val meta = Json.parse(message.value)
-    setOrdMessage(meta)
     val event = (meta \ "payload" \ "after")
     val order_id = (event \ "order_id").get.as[String]
     val order_score = (event \ "order_score").get.as[String].toDouble
@@ -141,6 +142,12 @@ object ProcessStream {
     val ord_lat = (event \ "lat").get.as[String].toDouble
     val ord_lon = (event \ "lon").get.as[String].toDouble
     main.appendOrder(event.get, meta)
+
+    //TODO: produce raw order message
+    val key = order_id + ord_app_created_timestamp
+    main.producer.kinesisPutRecord("rip-demo-order-stream",event.toString,key)
+
+
 
 
     def matchCourier(record: JsValue): Unit = {
@@ -166,11 +173,13 @@ object ProcessStream {
             "ord_cour_dist" -> computeDist(cour_lat, cour_lon, ord_lat, ord_lon),
             "ord_cour_match_score" -> scoreCheck(courier_score, order_score)
           ).toString())
-          main.setMatchMessage(data)
 
           main.removeFromCour(record)
           main.removeFromOrder(event.get)
-          //          produceMatchedMessage(event.get, record)
+
+          //TODO: produce matched fan in
+          val key = order_id + "-match-" + courier_id
+          main.producer.kinesisPutRecord("rip-demo-match-stream",data.toString(),key)
           println(s"dropping match record after: ${main.courierRecords}")
         } else {
           /**

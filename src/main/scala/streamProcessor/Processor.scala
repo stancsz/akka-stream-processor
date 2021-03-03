@@ -12,7 +12,7 @@ import scala.concurrent.Future
 
 object Processor {
 
-
+  var producer = Producer
 
   var courMessage: JsValue = null
   var ordMessage: JsValue = null
