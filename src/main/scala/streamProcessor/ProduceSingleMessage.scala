@@ -7,8 +7,10 @@ import com.github.matsluni.akkahttpspi.AkkaHttpClient.logger
 import org.slf4j.LoggerFactory
 import software.amazon.awssdk.core.SdkBytes
 import software.amazon.awssdk.services.kinesis.KinesisAsyncClient
-import software.amazon.awssdk.services.kinesis.model.PutRecordRequest;
+import software.amazon.awssdk.services.kinesis.model.PutRecordRequest
 import software.amazon.awssdk.regions.Region
+
+import scala.concurrent.ExecutionException
 
 /**
  *
@@ -42,9 +44,10 @@ object ProduceSingleMessage {
 
 
     val message = "test message"
+    val key = s"partitionKey ${1}"
 
     val request: PutRecordRequest = PutRecordRequest.builder()
-      .partitionKey(String.format("partitionKey-%d", 1.toString))
+      .partitionKey(key)
       .streamName(streamname)
       .data(SdkBytes.fromByteArray(message.getBytes()))
       .build();
@@ -52,7 +55,6 @@ object ProduceSingleMessage {
     amazonKinesisAsync.putRecord(request);
 
 
-    import java.util.concurrent.ExecutionException
     try logger.info("Producing record msg number= {} , record sequence number {} ", 1, amazonKinesisAsync.putRecord(request).get.sequenceNumber)
     catch {
       case e: InterruptedException =>
