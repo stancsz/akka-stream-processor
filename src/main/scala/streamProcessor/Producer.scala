@@ -69,7 +69,6 @@ object Producer {
       case e: ExecutionException =>
         e.printStackTrace()
     }
-    amazonKinesisAsync.close()
   }
 
   def main(args: Array[String]): Unit = {
@@ -79,6 +78,7 @@ object Producer {
     val streamname = "akkademo-order"
     kinesisPutRecord(streamname, message, key)
     system.registerOnTermination(amazonKinesisAsync.close())
+//    amazonKinesisAsync.close()
     System.exit(0)
   }
 }
