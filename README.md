@@ -51,6 +51,20 @@ once setup successful, debezium will be streaming kafka topics as shown below:
 
 
 
+# Kinesis Setup
+
+| Data Stream Name        | Firsehose Delivery Stream | S3 prefix                                | S3 Bucket   |
+| ----------------------- | ------------------------- | ---------------------------------------- | ----------- |
+| rip-demo-courier-stream | rip-demo-courier-delstr   | courier-records / _error-courier-records | rip-demo-s3 |
+| rip-demo-order-stream   | rip-demo-order-delstr     | order-records / _error-order-records     | rip-demo-s3 |
+| rip-demo-match-stream   | rip-demo-match-delstr     | match-records / _error-match-records     | rip-demo-s3 |
+
+![image-20210303090415866](README.assets/image-20210303090415866.png)
+
+![image-20210303091843469](README.assets/image-20210303091843469.png)
+
+
+
 # Reading Materials
 
 [The Whys and Hows of Database Streaming](https://www.infoq.com/presentations/wepay-database-streaming/) -- recommended
