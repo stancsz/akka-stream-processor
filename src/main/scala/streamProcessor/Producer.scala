@@ -54,11 +54,18 @@ object Producer {
     kinesisPutRecord(this.amazonKinesisAsync, streamname: String, message: String, key: String)
   }
 
+  /**
+   * put records in the format as jsonline files
+   * @param amazonKinesisAsync
+   * @param streamname
+   * @param message
+   * @param key
+   */
   private def kinesisPutRecord(amazonKinesisAsync: KinesisAsyncClient = this.amazonKinesisAsync, streamname: String, message: String, key: String): Unit = {
     val request: PutRecordRequest = PutRecordRequest.builder()
       .partitionKey(key)
       .streamName(streamname)
-      .data(SdkBytes.fromByteArray(message.getBytes()))
+      .data(SdkBytes.fromByteArray((message+"\n").getBytes()))
       .build();
 
     amazonKinesisAsync.putRecord(request);
