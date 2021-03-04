@@ -76,7 +76,8 @@ object ProcessStream {
 
     // TODO produce raw courier message
     val key = courier_id + cour_app_created_timestamp
-    main.producer.kinesisPutRecord("rip-demo-courier-stream",Json.stringify(event.get),key)
+    val data = Json.toJson{Map("event" -> event.get, "meta" -> meta)}
+    main.producer.kinesisPutRecord("rip-demo-courier-stream",Json.stringify(data),key)
 
     def matchOrder(record: JsValue): Unit = {
       try {
@@ -146,7 +147,8 @@ object ProcessStream {
 
     //TODO: produce raw order message
     val key = order_id + ord_app_created_timestamp
-    main.producer.kinesisPutRecord("rip-demo-order-stream",Json.stringify(event.get),key)
+    val data = Json.toJson{Map("event" -> event.get, "meta" -> meta)}
+    main.producer.kinesisPutRecord("rip-demo-order-stream",Json.stringify(data),key)
 
 
     def matchCourier(record: JsValue): Unit = {
