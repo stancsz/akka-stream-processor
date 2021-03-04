@@ -76,7 +76,7 @@ object ProcessStream {
 
     // TODO produce raw courier message
     val key = courier_id + cour_app_created_timestamp
-    main.producer.kinesisPutRecord("rip-demo-courier-stream",event.toString,key)
+    main.producer.kinesisPutRecord("rip-demo-courier-stream",Json.stringify(event.get),key)
 
     def matchOrder(record: JsValue): Unit = {
       try {
@@ -95,22 +95,23 @@ object ProcessStream {
           println(s"line 85 - match made - distance check: ${distanceCheck(cour_lat, cour_lon, ord_lat, ord_lon, 15)}  , score check: ${scoreCheck(courier_score, order_score)} )")
           println(s"dropping match record before: ${main.orderRecords}")
 
-
-          val data: JsValue = toJson(Map(
-            "order_id" -> order_id,
-            "order_record" -> event,
-            "courier_id" -> courier_id,
-            "courier_record" -> record,
-            "ord_cour_dist" -> computeDist(cour_lat, cour_lon, ord_lat, ord_lon),
-            "ord_cour_match_score" -> scoreCheck(courier_score, order_score)
-          ).toString())
+          val data: JsValue = Json.toJson(
+            Map(
+              "order_id" -> toJson(order_id),
+              "order_record" -> toJson(event.get),
+              "courier_id" -> toJson(courier_id),
+              "courier_record" -> toJson(record),
+              "ord_cour_dist" -> toJson(computeDist(cour_lat, cour_lon, ord_lat, ord_lon)),
+              "ord_cour_match_score" -> toJson(scoreCheck(courier_score, order_score))
+            )
+          )
 
           main.removeFromOrder(record)
           main.removeFromCour(event.get)
 
           // TODO: produce matched message fan in
           val key = order_id + "-match-" + courier_id
-          main.producer.kinesisPutRecord("rip-demo-match-stream",data.toString(),key)
+          main.producer.kinesisPutRecord("rip-demo-match-stream",Json.stringify(data),key)
 
           println(s"dropping match record after: ${main.orderRecords}")
         } else {
@@ -145,9 +146,7 @@ object ProcessStream {
 
     //TODO: produce raw order message
     val key = order_id + ord_app_created_timestamp
-    main.producer.kinesisPutRecord("rip-demo-order-stream",event.toString,key)
-
-
+    main.producer.kinesisPutRecord("rip-demo-order-stream",Json.stringify(event.get),key)
 
 
     def matchCourier(record: JsValue): Unit = {
@@ -165,21 +164,23 @@ object ProcessStream {
           println(s"line 85 - match made - distance check: ${distanceCheck(cour_lat, cour_lon, ord_lat, ord_lon, 15)}  , score check: ${scoreCheck(courier_score, order_score)} )")
           println(s"dropping match record before: ${main.courierRecords}")
 
-          val data: JsValue = toJson(Map(
-            "order_id" -> order_id,
-            "order_record" -> event,
-            "courier_id" -> courier_id,
-            "courier_record" -> record,
-            "ord_cour_dist" -> computeDist(cour_lat, cour_lon, ord_lat, ord_lon),
-            "ord_cour_match_score" -> scoreCheck(courier_score, order_score)
-          ).toString())
+          val data: JsValue = Json.toJson(
+            Map(
+              "order_id" -> toJson(order_id),
+              "order_record" -> toJson(event.get),
+              "courier_id" -> toJson(courier_id),
+              "courier_record" -> toJson(record),
+              "ord_cour_dist" -> toJson(computeDist(cour_lat, cour_lon, ord_lat, ord_lon)),
+              "ord_cour_match_score" -> toJson(scoreCheck(courier_score, order_score))
+            )
+          )
 
           main.removeFromCour(record)
           main.removeFromOrder(event.get)
 
           //TODO: produce matched fan in
           val key = order_id + "-match-" + courier_id
-          main.producer.kinesisPutRecord("rip-demo-match-stream",data.toString(),key)
+          main.producer.kinesisPutRecord("rip-demo-match-stream",Json.stringify(data),key)
           println(s"dropping match record after: ${main.courierRecords}")
         } else {
           /**
