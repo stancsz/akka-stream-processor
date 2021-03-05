@@ -1,14 +1,22 @@
 # Overview
 
-this project primarily use these few following components: 
+This is an akka based stream processor school/educational project. 
+
+[slides: Milestone Demo 1](docs/milestone-1.md)
+
+
 
 ## Architecture Diagram
+
+this project primarily use these few following components: 
 
 ![arch](docs/setup-guide.assets/arch.png)
 
 
 
 # Setup Guide
+
+## Local setup
 
 To set up development environment locally:
 
@@ -43,15 +51,7 @@ docker-compose -f docker-compose-mysql.yaml down
 
 [debezium tutorial](https://github.com/debezium/debezium-examples/tree/master/tutorial)
 
-
-
-once setup successful, debezium will be streaming kafka topics as shown below:
-
-![demo](docs/setup-guide.assets/demo.gif)
-
-
-
-# Kinesis Setup
+## Kinesis Setup
 
 | Data Stream Name        | Firsehose Delivery Stream | S3 prefix                                | S3 Bucket   |
 | ----------------------- | ------------------------- | ---------------------------------------- | ----------- |
@@ -59,9 +59,17 @@ once setup successful, debezium will be streaming kafka topics as shown below:
 | rip-demo-order-stream   | rip-demo-order-delstr     | order-records / _error-order-records     | rip-demo-s3 |
 | rip-demo-match-stream   | rip-demo-match-delstr     | match-records / _error-match-records     | rip-demo-s3 |
 
-![image-20210303090415866](README.assets/image-20210303090415866.png)
+![image-20210303090415866](docs/README.assets/image-20210303090415866.png)
 
-![image-20210303091843469](README.assets/image-20210303091843469.png)
+![image-20210303091843469](docs/README.assets/image-20210303091843469.png)
+
+## SBT Project Setup
+
+Fulfil both sbt and maven dependencies, and then build the project.
+
+To test the system, either write to the mysql db defined in the docker image or use the companion project to produce random data: 
+
+[akka-random-data-producer](https://github.com/stancsz/akka-random-data-producer)
 
 
 

@@ -2,6 +2,11 @@
 
 To set up development environment locally:
 
+## using the pre-written script:
+run `setup/setup_script.sh`
+
+## manually
+
 ```
 # pull yaml & config files
 wget https://raw.githubusercontent.com/debezium/debezium-examples/master/tutorial/docker-compose-mysql.yaml
