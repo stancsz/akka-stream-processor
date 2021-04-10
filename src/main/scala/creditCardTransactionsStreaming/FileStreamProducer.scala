@@ -7,7 +7,7 @@ import akka.stream.alpakka.file.scaladsl.DirectoryChangesSource
 import java.nio.file.FileSystems
 import scala.concurrent.duration._
 
-object Producer {
+object FileStreamProducer {
   /**
    * var path:String = "fs:/status=unprocessed/topic=credit_card_transaction/version=1.0-demo/created=2021-04-10"
    * var destpath: String = "fs:/status=processed/topic=credit_card_transaction/version=1.0-demo/created=2021-04-10"
