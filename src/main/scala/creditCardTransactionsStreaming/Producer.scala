@@ -1,0 +1,5 @@
+package creditCardTransactionsStreaming
+
+object Producer {
+
+}
