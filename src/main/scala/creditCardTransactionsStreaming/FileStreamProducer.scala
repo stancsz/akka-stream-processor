@@ -3,7 +3,6 @@ package creditCardTransactionsStreaming
 import akka.actor.ActorSystem
 import akka.stream.ActorMaterializer
 import akka.stream.alpakka.file.scaladsl.DirectoryChangesSource
-
 import java.nio.file.FileSystems
 import scala.concurrent.duration._
 
