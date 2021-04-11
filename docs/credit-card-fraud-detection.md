@@ -82,3 +82,7 @@ FROM ML.PREDICT( MODEL advdata.ulb_fraud_detection,
 SELECT * FROM detection where class = 1
 ```
 
+
+
+# refs
+https://stackoverflow.com/questions/40224457/reading-a-csv-files-using-akka-streams
