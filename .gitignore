@@ -2,3 +2,4 @@
 .idea/
 .bsp/
 target/
+sbt-dist/

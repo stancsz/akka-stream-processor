@@ -28,15 +28,23 @@ lazy val root = (project in file(".")).
     )
   )
 
-val playVersion = "2.8.7"
+val playVersion = "2.8.1"
 
 libraryDependencies += "com.typesafe.play" %% "play-json" % playVersion
 
 
-val circeVersion = "0.12.3"
+libraryDependencies ++= Seq(
+  "com.lightbend.akka" %% "akka-stream-alpakka-kinesis" % "2.0.2",
+)
 
 libraryDependencies ++= Seq(
-  "io.circe" %% "circe-core",
-  "io.circe" %% "circe-generic",
-  "io.circe" %% "circe-parser"
-).map(_ % circeVersion)
+  "com.lightbend.akka" %% "akka-stream-alpakka-csv" % "2.0.2",
+//  "com.typesafe.akka" %% "akka-stream" % AkkaVersion
+)
+
+
+val AkkaVersion = "2.5.31"
+libraryDependencies ++= Seq(
+  "com.lightbend.akka" %% "akka-stream-alpakka-file" % "2.0.2",
+  "com.typesafe.akka" %% "akka-stream" % AkkaVersion
+)

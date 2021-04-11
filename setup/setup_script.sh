@@ -1,4 +1,5 @@
 #!/bin/bash
+bash docker_kill_all.sh
 export DEBEZIUM_VERSION=1.4
 docker-compose -f docker-compose-mysql.yaml up -d
 echo "sleeping for 10s..."; sleep 10s
