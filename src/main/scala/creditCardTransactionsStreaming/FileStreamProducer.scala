@@ -3,6 +3,8 @@ package creditCardTransactionsStreaming
 import akka.actor.ActorSystem
 import akka.stream.ActorMaterializer
 import akka.stream.alpakka.file.scaladsl.DirectoryChangesSource
+import creditCardTransactionsStreaming.CSVModel.processCSV
+
 import java.nio.file.FileSystems
 import scala.concurrent.duration._
 
@@ -23,9 +25,14 @@ object FileStreamProducer {
 
     // #minimal-sample
     val fs = FileSystems.getDefault
-    val changes = DirectoryChangesSource(fs.getPath(path), pollInterval = 1.second, maxBufferSize = 1000)
+    val changes = DirectoryChangesSource(fs.getPath(path), pollInterval = 2.second, maxBufferSize = 1000)
     changes.runForeach {
-      case (path, change) => println("Path: " + path + ", Change: " + change)
+      case (path, change) => {
+        println("Path: " + path + ", Change: " + change)
+        if (change.toString == "Creation" || change.toString == "Modification") {
+          processCSV(path.toString)
+        }
+      }
     }
     // #minimal-sample
 
