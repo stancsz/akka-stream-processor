@@ -2,45 +2,23 @@ package creditCardTransactionsStreaming
 
 /**
  * spark bigquery connector guide
- * https://cloud.google.com/dataproc/docs/tutorials/bigquery-connector-spark-example
+ * https://cloud.google.com/dataproc/docs/tutoials/bigquery-connector-spark-example
+ * https://github.com/GoogleCloudDataproc/spark-bigquery-connector
  */
-
+import com.github.matsluni.akkahttpspi.AkkaHttpClient.logger
 import com.google.cloud.spark
 import org.apache.spark.sql.SparkSession
 
 object SparkBigQuery {
-  /*
-   * Remove comment if you are not running in spark-shell.
-   *
-  import org.apache.spark.sql.SparkSession
-  val spark = SparkSession.builder()
-    .appName("spark-bigquery-demo")
-    .getOrCreate()
-  */
+  def main(args: Array[String]): Unit = {
+    val spark = SparkSession.builder()
+      .appName("spark-bigquery-demo")
+      .config("spark.master", "local")
+      .getOrCreate()
 
-  // Use the Cloud Storage bucket for temporary BigQuery export data used
-  // by the connector.
-  val bucket = "[bucket]"
-  spark.conf.set("temporaryGcsBucket", bucket)
-
-  // Load data in from BigQuery. See
-  // https://github.com/GoogleCloudDataproc/spark-bigquery-connector/tree/0.17.3#properties
-  // for option information.
-  val wordsDF = spark.read.format("bigquery")
-    .option("table","bigquery-public-data:samples.shakespeare")
-    .load()
-    .cache()
-  wordsDF.createOrReplaceTempView("words")
-
-  // Perform word count.
-  val wordCountDF = spark.sql(
-    "SELECT word, SUM(word_count) AS word_count FROM words GROUP BY word")
-  wordCountDF.show()
-  wordCountDF.printSchema()
-
-  // Saving the data to BigQuery.
-  wordCountDF.write.format("bigquery")
-    .option("table","wordcount_dataset.wordcount_output")
-    .save()
+    spark.read
+      .format("bigquery")
+      .option("credentialsFile", "src/main/resources/bottlerocket-dev-2449233c0fcb.json")
+  }
 
 }

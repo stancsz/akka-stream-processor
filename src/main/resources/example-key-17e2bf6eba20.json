@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "bottlerocket-dev",
+  "private_key_id": "17e2bf6eba202468d8288e9e058197e991a591d6",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQCOHoU+yh1ZElUo\nz8DUCo5xUKFGl3WZktLErtkJhnDB4pfbRdxmRU+ieFkSEdhY5VUhg+4kkWmJAeBg\nsRpjrAPAlfaqwzLfNO5+rMrXIBNOT/08Jq3H16+xK3ATQGTzplVzmAmE2odOvVIq\nODLIYqRf8UWVFHPEbPCY+3qi0CVHYUKvNu68PNSNUeWvG2yd0qrY8DfxgEEfdwvI\nR/mIBgm17mEwks/Do/wt5ZzAu//xPxmfdYofRHyggMMhttjtDrD0L6oSq/irpiHU\nblIY0KEVx+KD2f1FDSpewyHsB2PBXsgYye4u6ABnTXkzAe2dlZduOgjOsdnjb8RG\nTU6W9l55AgMBAAECggEAMGmbMFF/f9kr41QqNtFFxroVxktQBzmpzNBXJNSEUrfS\nzSJWOwx/XTQr+2jSzy2IO3uKwzA5yC84dRe/ipaNTKyJM5B9IuYQHFzWWEQX74R2\nGmh+qGYD9pF6g0RbX1iZIWB4VaZvk1YQyEsOmY5oujohXvBxo0cNCsAX/aB0IoUw\nNYOdSiWww4wrP2Y/Z+8YzZplRR4HgKlYkzvmf4kaAnfjYDMFv9zgIkYc16zr9joX\nHyMrVk2YJ+o5dnO3Nw4MhwfGhwd4CL463EbhLs3Xd5ZdkmoMED3rZ0JdTbZV3JNp\nkg6R4pnovTxWR8fHThLQnoOg2XjRwQ4ajlWR93au9QKBgQDG9CZ9MgwQgXmLk65W\n251ZbHVbYmowIEqdWvGSuC4IFuSOFfyl2SXj4xfLkgP1sMM1xXCOqO1/afiylgoM\n+GTVGqxWUZhb8xISV2iGP7V+y7d9hm2H74WMIjJ/MAqlS7jJDLhaUFvRWYtZB9ql\nYwCH4ySckh5DADcbbE6lveL8EwKBgQC23oiYvJOZwN0IaPLWgTged86YRGvd2J+U\ndNTZ1P89cweClPIs3UOUObciVi3voqbr6/kwVL4MhuwKb/rvuUvG8cj7ioRPDYXJ\n5qjITvOje5GgF9wA5S03dMRp/rHbraxBbIzTQbpMzxFJpKsPPV4LtaVup66IwBCz\noB6aY0G0wwKBgH9U0y1dUotd0kSaiAHfHJ2W5KVQH1Yd1KNRCTs11YAn5q9pMwGS\nMMXhGeGX2iDsuIM5kgg75YSediUWEeirMR2SrKmyHyj6MJ68gpEpRSeZih40YvWV\nPoupd1gfjzCrfeBu264xsBIUlTKt7CndawGNRmlOuz92a86JSuyY0yUxAoGAZn57\nmP+4yqhqOlh4Ivnx9kG4LWfL/V94scB5vE3BcTOTtgC9a5/oTJ+8oSYkQPetDvYH\niKs2idblXUQ+JTZ53luOBk4wsg4mOm9pkjuOGscba9tzl5zbpwVvQOlbzoCc1157\n37wrKvmz+s6sgbInj/CTdF3PWR4tPkA0ZtvS6/kCgYBostVyFVLKldxUckF5gjic\nHqaUnr4fpzgoTgAsDlO/ozXI33S0mMhXpVOJN4ZMUr6iArxLmJeTMy+1T59iyNIR\nBen/wO5IcX91I9uLyYZnqhpZzNxgPhCHnfoh6zNIJrcGI/akiLlt54fgC34zmQsP\nR3plxlX+wGQzElaR3F+5VQ==\n-----END PRIVATE KEY-----\n",
+  "client_email": "akka-stream-processor@bottlerocket-dev.iam.gserviceaccount.com",
+  "client_id": "101324191484355958702",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/akka-stream-processor%40bottlerocket-dev.iam.gserviceaccount.com"
+}
