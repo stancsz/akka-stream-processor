@@ -48,3 +48,7 @@ libraryDependencies ++= Seq(
   "com.lightbend.akka" %% "akka-stream-alpakka-file" % "2.0.2",
   "com.typesafe.akka" %% "akka-stream" % AkkaVersion
 )
+
+libraryDependencies += "com.google.cloud.spark" %% "spark-bigquery-with-dependencies" % "0.19.1"
+
+libraryDependencies += "org.apache.spark" %% "spark-sql" % "3.1.1"
