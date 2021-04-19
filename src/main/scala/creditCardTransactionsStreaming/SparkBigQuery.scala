@@ -24,13 +24,14 @@ object SparkBigQuery {
       .bigquery("bigquery-public-data.samples.shakespeare")
 
      */
-    var bqResult = spark.read
+    val bqResult = spark.read
       .format("bigquery")
       .option("credentialsFile", "src/main/resources/bottlerocket-dev-2449233c0fcb.json")
       .bigquery("bigquery-public-data.samples.shakespeare")
 
-    bqResult.collect().foreach(println)
-    show(bqResult.count())
+//    bqResult.collect().foreach(println)
+//    show(bqResult.count())
+    bqResult.show(35)
   }
 
 }
