@@ -8,6 +8,8 @@ package creditCardTransactionsStreaming
 import com.github.matsluni.akkahttpspi.AkkaHttpClient.logger
 import com.google.cloud.spark
 import org.apache.spark.sql.SparkSession
+import com.google.cloud.spark.bigquery._
+import org.apache.spark.sql.catalyst.ScalaReflection.universe.show
 
 object SparkBigQuery {
   def main(args: Array[String]): Unit = {
@@ -16,9 +18,19 @@ object SparkBigQuery {
       .config("spark.master", "local")
       .getOrCreate()
 
-    spark.read
+    /**
+     * Example usage
+     spark.read.format("bigquery").option("credentialsFile", "src/main/resources/bottlerocket-dev-2449233c0fcb.json")
+      .bigquery("bigquery-public-data.samples.shakespeare")
+
+     */
+    var bqResult = spark.read
       .format("bigquery")
       .option("credentialsFile", "src/main/resources/bottlerocket-dev-2449233c0fcb.json")
+      .bigquery("bigquery-public-data.samples.shakespeare")
+
+    bqResult.collect().foreach(println)
+    show(bqResult.count())
   }
 
 }
