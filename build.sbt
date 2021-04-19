@@ -7,6 +7,11 @@ scalaVersion := "2.12.6" // newer scala version not supported by 'akka-stream-ka
 lazy val akkaHttpVersion = "10.2.3"
 lazy val akkaVersion    = "2.6.12"
 
+// should match the dependency in grpc-netty
+lazy val grpcVersion = "1.30.2"
+lazy val nettyTcnativeVersion = "2.0.29.Final"
+lazy val nettyVersion = "4.1.48.Final"
+
 lazy val root = (project in file(".")).
   settings(
     inThisBuild(List(
@@ -24,8 +29,13 @@ lazy val root = (project in file(".")).
       "com.typesafe.akka" %% "akka-http-testkit"        % akkaHttpVersion % Test,
       "com.typesafe.akka" %% "akka-actor-testkit-typed" % akkaVersion     % Test,
       "org.scalatest"     %% "scalatest"                % "3.1.4"         % Test,
-      "com.typesafe.akka" %% "akka-stream-kafka" % "0.21.1"
-    )
+      "com.typesafe.akka" %% "akka-stream-kafka" % "0.21.1",
+
+      "io.netty" % "netty-all" % "4.1.30.Final" % "provided", //necessary in fixing the spark io error
+      "io.netty" % "netty-all" % nettyVersion % "provided",
+      "io.netty" % "netty-buffer" % nettyVersion,
+      "io.netty" % "netty-common" % nettyVersion,
+)
   )
 
 val playVersion = "2.8.1"
